@@ -445,3 +445,104 @@ contract TheBlockchainMessenger {
 
 # Section 4: [Project] Smart Money - Deposit And Withdrawals
 
+## Installing And Configuring MetaMask
+
+* That is a browser plugin which can securely store private keys and connect to different blockchains.
+* [LAB](https://ethereum-blockchain-developer.com/2022-03-deposit-withdrawals/01-installing-configuring-metamask/)
+
+
+## Get Free Ether And Send Transactions
+
+* [LAB](https://ethereum-blockchain-developer.com/2022-03-deposit-withdrawals/02-getting-testnet-ether/)
+* Network Selection
+  * Attention here: some of the pictures have "Ropsten" selected, but the Ropsten test-network had a couple of hiccups, so I recommend Goerli instead!
+
+  * Also, since the PoS Merge, Kovan and Rinkeby are getting deprecated. Sepolia is not very reliable in my opinion. Best is, to try Görli.
+
+* Faucets
+  * Sometimes Faucets don't work as expected. Unfortunately there is nothing much that I can do about it. It is time intensive to run a faucet and usually it doesn't pay off economically. Here is a list of Faucets in case the one here doesn't work, you can probably switch to another one:
+
+  * My current go-to Faucet I really like for all networks: https://faucet.paradigm.xyz
+
+  * Ropsten: https://faucet.metamask.io
+
+  * Rinkeby: https://faucet.rinkeby.io https://www.rinkebyfaucet.com https://app.mycrypto.com/faucet https://faucets.chain.link/rinkeby
+
+  * Kovan: https://gitter.im/kovan-testnet/faucet basically post your eth address in the gitter chat
+
+  * Görli: https://fauceth.komputing.org/?chain=5 https://goerli-faucet.slock.it/index.html https://faucet.goerli.mudit.blog
+
+  * Another "special edition" Faucet is maintained by Keir "Blockchain-Gandalf" Finlow-Bates, who also wrote a great book about Blockchains. He tries to maintain it as good as possible and it outputs Ropsten Ether: https://moonborrow.com
+
+  * Kintsugi (Eth2.0): https://kintsugi.themerge.dev
+
+## (Behing The Scenes) Metamask
+
+* Metamask -> RPC -> Infure > Blockchain Node -> Blockchain
+* Infura
+  * Service Provider
+  * Runs its own blockchain nodes internally in the datacenters
+  * They have convenient access to those blockchain nodes and the blockchain nodes itself
+  * They are storing or they are sincronyzing the data with the blockchain and alaways keeping it up to date
+  * Uses RPC
+
+* Key Take-Aways
+  * You need a blockchain node to interact with the Blockchain
+  * The Blockchain is the single source of truth
+  * There are infrastructure providers to abstract running Blockchains aways
+
+![](imgs/metamask-behing-the-scenes.png)
+
+## (Behing The Scenes) An Ethereum Transaction
+
+* (WEB3JS Documentation)[https://web3js.readthedocs.io/en/v1.2.11/web3-eth.html]
+
+* sendTransaction function
+
+```js
+web3.eth.sendTransaction(transactionObject [, callback])
+```
+
+* Parameters
+
+* 1 - **Object** - The transaction object to send:
+  * from - String | Number: The address for the sending account. Uses the web3.eth.defaultAccount property, if not specified. Or and address or index of a local wallet in web3.eth.accounts.wallet.
+  * to - String: (optional) The destination address of the message, left undefined for a contract-creation transaction.
+  * value - Number|String|BN|BigNumber: (optional) The value transferred for the transaction in **wei**, also the endowment if it’s a contract-creation transaction.
+  * gas - Number: (optional, default: To-Be-Determined) The amount of gas to use for the transaction (unused gas is refunded).
+  * gasPrice - Number|String|BN|BigNumber: (optional) The price of gas for this transaction in wei, defaults to web3.eth.gasPrice.
+  * data - String: (optional) Either a ABI byte string containing the data of the function call on a contract, or in the case of a contract-creation transaction the initialisation code.
+  * nonce - Number: (optional) Integer of the nonce. This allows to overwrite your own pending transactions that use the same nonce.
+  * chain - String: (optional) Defaults to mainnet.
+  * hardfork - String: (optional) Defaults to petersburg.
+  * common - Object: (optional) The common object
+  * customChain - Object: The custom chain properties
+  * name - string: (optional) The name of the chain
+  * networkId - number: Network ID of the custom chain
+  * chainId - number: Chain ID of the custom chain
+  * baseChain - string: (optional) mainnet, goerli, kovan, rinkeby, or ropsten
+  * hardfork - string: (optional) chainstart, homestead, dao, tangerineWhistle, spuriousDragon, byzantium, constantinople, petersburg, or istanbul
+* 2 - callback - Function: (optional) Optional callback, returns an error object as first parameter and the result as second.
+
+
+* How does "the Blockchain" know that the transaction is not malicious? Or, in other words:
+* How does the Blockchain know it's allowed to transfer [value] from account [from] to account [to]?
+
+* Ethereum Transaction Signature
+
+* signTransaction function
+
+
+
+## (Behind The Scenes) Hashing
+
+## Cancel Or Update Ethereum Transactions
+
+## Remix And The Injected Web3 Provider
+
+## The Payable Modifier And Msg.value
+
+## (The Fallback Functions) Fallback And Receive
+
+## The Smart Money Implementation
+
