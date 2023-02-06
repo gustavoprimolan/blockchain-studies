@@ -495,7 +495,7 @@ contract TheBlockchainMessenger {
 
 ## (Behing The Scenes) An Ethereum Transaction
 
-* (WEB3JS Documentation)[https://web3js.readthedocs.io/en/v1.2.11/web3-eth.html]
+* [WEB3JS Documentation](https://web3js.readthedocs.io/en/v1.2.11/web3-eth.html)
 
 * sendTransaction function
 
@@ -531,12 +531,102 @@ web3.eth.sendTransaction(transactionObject [, callback])
 * Ethereum Transaction Signature
 
 * signTransaction function
+  * [WEB3JS Documentation](https://web3js.readthedocs.io/en/v1.2.11/web3-eth.html#signtransaction)
+
+```js
+web3.eth.signTransaction({
+    from: "0xEB014f8c8B418Db6b45774c326A0E64C78914dC0",
+    gasPrice: "20000000000",
+    gas: "21000",
+    to: '0x3535353535353535353535353535353535353535',
+    value: "1000000000000000000", ---> wei amount
+    data: ""
+}).then(console.log);
+> {
+    raw: '0xf86c808504a817c800825208943535353535353535353535353535353535353535880de0b6b3a76400008025a04f4c17305743700648bc4f6cd3038ec6f6af0df73e31757007b7f59df7bee88da07e1941b264348e80c78c4027afc65a87b0a5e43e86742b8ca0823584c6788fd0',
+    tx: {
+        nonce: '0x0',
+        gasPrice: '0x4a817c800',
+        gas: '0x5208',
+        to: '0x3535353535353535353535353535353535353535',
+        value: '0xde0b6b3a7640000',
+        input: '0x',
+        v: '0x25',
+        r: '0x4f4c17305743700648bc4f6cd3038ec6f6af0df73e31757007b7f59df7bee88d',
+        s: '0x7e1941b264348e80c78c4027afc65a87b0a5e43e86742b8ca0823584c6788fd0',
+        hash: '0xda3be87732110de6c1354c83770aae630ede9ac308d9f7b399ecfba23d923384'
+    }
+}
+```
+
+* Transaction Object:
+  * You need a private key and the private key is stored in metamask without really being visible but it uses them and so called **Elliptic Curve Digital Signature Algorithm** (ECDSA) to create the public key and from the public key it creates the Ethereum Account.
+  * Private Key
+    * 32-bytes (64 hex characters)
+    * 0x123451234512345... 64x
+  * Public key
+    * Uses ECDSA from private key to generate public key
+    * 64-bytes long
+  * Ethereum Account
+    * Keccak Hash of the last 20 bytes of the public key
+    * Hashing the public key again and it's taking the last 20 bytes or last 40 hex characters
+
+
+![](imgs/accounts-and-signing.png)
+![](imgs/seed-phrase.png)
+
 
 
 
 ## (Behind The Scenes) Hashing
 
+### Cryptographic Hashing
+
+* Example: 
+  * HashFunction("Hello Rome") => "3289232fd213f2358d823749a908543398fb8473912305898e8210284750394"
+  * Response called **digest**
+
+![](imgs/cryptographic-hashing.png)
+
+* The ideal cryptographic hash function has **FIVE** main properties
+  * 1 - It is deterministic so the same message always results in the same hash.
+    * No matter how much time passed
+    * No matter on which machine
+    * No matter where you are
+  * 2 - It is quick to compute the hash value for any given message
+    * Sometimes beneficial to slow that down in case to avoid any brute force attacks.
+  * 3 - It is infeasible to generate a message from its hash value except by trying all possible messages
+    * Brute force attack should be the only viable way of getting back to the message.
+    * Should take very long or pretty much forever
+  * 4 - A small change to a message should change the hash value so extensively that the new hash value appears uncorrelated with the old hash value
+  * 5 - It is infeasible to find two different messages with the same hash value
+    * Should not be any collisions
+    * One problem with MD5 is that we found or people found a couple of collisions and found that it's in general not a really good hash algorithms
+    * Keccak Hash is considered safe. (validate it)
+
+* Blockchain Hashing + Decentralization
+
+![](imgs/blockchain-hashing-dencetralization.png)
+
+* Key Take-Aways
+  * Hashing it the mathematical foundation of Blockchains
+  * Blocks have Hashes of Previious Blocks
+    * Are "chained together"
+  * Changing information in a previous block changes all blocks thereafter
+  * Blocks are stored decentralized
+    * on every participating blockchain-node
+
+
 ## Cancel Or Update Ethereum Transactions
+
+### Update / Delete Transactions?
+
+* Gas-Price Auction
+  * The higher the gas price, the more likely it gets mined
+
+* Send the same transaction nonce with higher gas fee
+  * Update: higher gas fee
+  * Cancel: Send no data + to = from
 
 ## Remix And The Injected Web3 Provider
 
