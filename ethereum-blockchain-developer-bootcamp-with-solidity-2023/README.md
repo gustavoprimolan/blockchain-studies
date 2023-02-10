@@ -476,7 +476,7 @@ contract TheBlockchainMessenger {
 
   * Kintsugi (Eth2.0): https://kintsugi.themerge.dev
 
-## (Behing The Scenes) Metamask
+## (Behind The Scenes) Metamask
 
 * Metamask -> RPC -> Infure > Blockchain Node -> Blockchain
 * Infura
@@ -493,7 +493,7 @@ contract TheBlockchainMessenger {
 
 ![](imgs/metamask-behing-the-scenes.png)
 
-## (Behing The Scenes) An Ethereum Transaction
+## (Behind The Scenes) An Ethereum Transaction
 
 * [WEB3JS Documentation](https://web3js.readthedocs.io/en/v1.2.11/web3-eth.html)
 
@@ -577,7 +577,6 @@ web3.eth.signTransaction({
 
 
 
-
 ## (Behind The Scenes) Hashing
 
 ### Cryptographic Hashing
@@ -621,6 +620,8 @@ web3.eth.signTransaction({
 
 ### Update / Delete Transactions?
 
+* [LAB](https://ethereum-blockchain-developer.com/2022-03-deposit-withdrawals/06-cancel-update-transactions/)
+
 * Gas-Price Auction
   * The higher the gas price, the more likely it gets mined
 
@@ -628,11 +629,211 @@ web3.eth.signTransaction({
   * Update: higher gas fee
   * Cancel: Send no data + to = from
 
+![](imgs/metamask-update-delete-transactions.png)
+
+![](imgs/transaction-pending.png)
+
+* Send the trasncation to yourself, then you will cancel it wrong.
+* Send the trasncation to yourself with the same nonce, then you cancel it.
+* How do you do it with Metamask
+  * From the pending transaction, you have to click on see more to actually get to the nonce, click to the nonce.
+  * You also need to have access to the private key that has that is from address. If you don't have it, there's nothing you can do
+  * Go to you metamask
+  * Advanced tab
+  * Scroll down and there you see customize transactions nonce.
+  * Turn this on the change to nonce transaction number on confirmation screens
+  * Send ether to yourself and set the correct nonce as the same of the stuck transaction
+
 ## Remix And The Injected Web3 Provider
+
+* [LAB](https://ethereum-blockchain-developer.com/2022-03-deposit-withdrawals/07-injected-web3-provider/)
+
 
 ## The Payable Modifier And Msg.value
 
+* [LAB](https://ethereum-blockchain-developer.com/2022-03-deposit-withdrawals/07-injected-web3-provider/)
+
+* In order for it to receive Eth, you need to add two things here:
+
+  * you need to add the payable modifier. That is the keyword "payable" right next to the visibility specifier "public"
+  * you need to understand the global msg-objects property called value. msg.value.
+
+```solidity
+
+//SPDX-License-Identifier: MIT
+
+pragma solidity 0.8.15;
+
+contract SampleContract {
+  string public myString = "Hello World";
+
+  // payable keyword - we have to mark functions that are meant to receive ETH with a payabla modifier
+  // now the method can receive ether
+  // the ether can be stuck in the contract and as long as we're not sending it away
+  // it will stay there forever
+  // it is necessary send it back to an address
+  function updateString(string memory _newString) public payable {
+    // ether is global unit
+    // likey gwei. There's a couple of them
+    // value get the ether sent to the smart contract
+    if(msg.value == 1 ether) {
+      myString = _newString;
+    
+    } else {
+      // else send the ether back
+      // as sender is just an address it needs to be wrapped in payable casting modifiers
+      // with payable every variable of the type address has a transfer function
+      // and this transfer function will transfer from the SMART CONTRACT the value to the ADDRESS back
+      // now the smart contract can take care of his own money
+      // so you can send money to the smart contract, it can be stored there, there is nothign that the logic itself needs to do it is natively on the EVM level and it can send it back
+      payable(msg.sender).transfer(msg.value);
+    }
+  }
+
+}
+
+```
+
 ## (The Fallback Functions) Fallback And Receive
 
+* [LAB](https://ethereum-blockchain-developer.com/2022-03-deposit-withdrawals/09-sending-ether-to-smart-contracts/)
+
+* Receive vs Fallback
+  * receive() is a function that gets priority over fallback() when a calldata is empty. But fallback gets precedence over receive when calldata does not fit a valid function signature.
+
+```solidity
+
+//SPDX-License-Identifier: MIT
+
+pragma solidity 0.8.15;
+
+
+// however there is no function on this contract you can do a LOW LEVEL INTERACTIONS
+// it will basically just send one single transfer, one single transaction
+// By default the SMART CONTRACT CANNOT receive anything
+// There's only one chance the smart contract can receive something, and that is by letting another smart contract
+// self-destruct with these smart contracts address as a beneficiary
+contract SampleFallback {
+
+  //if the constructor is noy payable, then you cannot send a value together witht the deployment
+  // the constructor is not payable by default
+
+  uint public lastValueSent;
+  string public lastFunctionCalled;
+  uint public myUint;
+
+  function setMyUint(uint _myNewUint) public {
+    myUint = _myNewUint;
+  }
+
+  //receiver function is a function that can receive ether and then it needs to be defined as receive
+  // you can execute it as a LOW LEVEL INTERACTION WITHOUT DATA
+  // otherwise, if there is a calldata, it will need a fallback function
+  // the problem with the receiver function is it can only rely on 2300 gas, which is really low
+  // it so called gas steepened because if somebody is sending a transaction without any data
+  // or anything to the smart contract, especially if another contract is interacting with this contract
+  // and just sending and ether or some value, then it will not have enough gas to actually
+  // do something meaninful
+  // you cannot even write a function where any call any other function or write any storage variable
+  // we are still going to do that because we are providing here enough gas
+  // we are sinding enough gas to the smart contract with our transcation, but you cannot rely on it
+  // you sould never rely on more than 2300 gas
+  receive() external payable {
+    lastValueSent = msg.value;
+    lastFunctionCalled = "receive";
+  }
+
+
+  // if you have a fallback function that is payable but NO RECEIVE FUNCTION, then no matter if
+  // a calldata or there's a data sent, it WILL CALL the FALLBACK FUNCTION
+  // payable is optional
+  // if you want to have a function that gets called in case no other function matches the data
+  // then it will hit the fallback function
+  // if you want that fallback function to also be able to receive any value, then you add the payable modifier
+  fallback() external payable {
+    lastValueSent = msg.value;
+    lastFunctionCalled = "fallback";
+  }
+
+}
+
+
+
+```
+
+## Section Summary
+
+### Functions
+* Visibility, Constructor, Fallback
+
+### Setter and Getter Functions
+* Writing Transactions: Transactions
+* Reading Transactions: Call
+* Calls are against a local blockchain node
+  * Remember: Everyone has a copy of the blockchain
+  * If you don't need to change anything, you don't need to inform other participants
+  * Reading is virtually free
+* View/Pure Function
+  * Earlier called a "constant" function
+* View Function: Reading from the State and from other View Functions
+* Pure Function: Not reading or modifying the state
+
+### Function Visibility
+
+* Public
+  * Can be called internally and externally
+* Private
+  * Only for the contract, not externally reachable and not via derived contracts
+* External
+  * Can be called from other contracts
+  * Can be called externally
+* Internal
+  * Only from the contract itself or from derived contracts. Can't be invoked by a transaction.
+
+### Constructor
+
+* A function with the name "constructor(...)"
+* Called only during deployment
+* Can't be called afterwards
+* Is either public or internal
+
+### Fallback Function
+
+* A function with the name "fallback() external [payable]" to receive calldata
+* A function with the name "receive() external payable" to receive a value without calldata
+* Called when a transaction with the wrong function signature is sent to the smart contract
+* Called when the function in the transaction isn't found
+* Can only be external
+  * Fallback payable is opitional
+* Contracts receiving Ether without a fallback function and without a function call will throw an exception
+* You cannot completely avoid receiving Ether
+  * Miner reward or selfdestruct(address) will forcefully credit Ether
+* Worst case: You can only rely on 2300 gas (gas stipend)
+  * _contractAddress.transfer(1 ether); send only 2300 gas along
+* Forcefully prevent contract execution if called with contract data
+  * require(msg.data.length == 0)
+    * Exceptions
+
+### Msg.value and address
+
+* Global **msg-object** contains a value property (**in wei**)
+* How much wei was sent during this call?
+
+* Address-type variables have a balance (address X = 0x123... X.balance)
+* Address type variable can be payable (address payable x)
+* Payable addresses can receive a value (x.transfer(...wei))
+* The contract itself can have a balance (address(this).balance)
+
+### Key Take-Aways
+* Constructor is called only once
+* Fallback function is here to receive Ether as a simple transaction
+  * Beware of Gas limit
+* Getter functions are usually view functions
+* View/pure is only against your local blockchain node
+  * Don't need minig
+* There are payable addresses and addresses have a balance
+
 ## The Smart Money Implementation
+
+
 
