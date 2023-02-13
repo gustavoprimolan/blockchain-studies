@@ -836,4 +836,6 @@ contract SampleFallback {
 ## The Smart Money Implementation
 
 
-
+* [MySmartWallet](contracts-section-4/MySmartWallet.sol)
+* [Solution made at the class](contracts-section-4/MySmartWallet.sol)
+* [LAB](https://ethereum-blockchain-developer.com/2022-03-deposit-withdrawals/11-the-smart-money-implementation/)
