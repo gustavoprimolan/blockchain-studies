@@ -835,7 +835,38 @@ contract SampleFallback {
 
 ## The Smart Money Implementation
 
-
 * [MySmartWallet](contracts-section-4/MySmartWallet.sol)
 * [Solution made at the class](contracts-section-4/MySmartWallet.sol)
 * [LAB](https://ethereum-blockchain-developer.com/2022-03-deposit-withdrawals/11-the-smart-money-implementation/)
+
+
+# Section 5: [Project] Smart Wallet
+
+## Solidity Mappings
+* [ExampleMapping](contracts-section-5/ExampleMapping.sol)
+* [LAB](https://ethereum-blockchain-developer.com/2022-04-smart-wallet/01-mappings/)
+* Internal Storage of Mappings
+  * Here's a little advanced detour to how mappings and arrays are stored internally in the EVM.
+  * Array data is located starting at keccak256(p) and it is laid out in the same way as statically-sized array data would: One element after the other, potentially sharing storage slots if the elements are not longer than 16 bytes. Dynamic arrays of dynamic arrays apply this rule recursively.
+  * The value corresponding to a mapping key k is located at keccak256(h(k) . p) where . is concatenation and h is a function that is applied to the key depending on its type:
+  * for value types, h pads the value to 32 bytes in the same way as when storing the value in memory.
+  * for strings and byte arrays, h computes the keccak256 hash of the unpadded data.
+  * Find more information here on the Solidity page: https://docs.soliditylang.org/en/v0.8.3/internals/layout_in_storage.html?highlight=storage#mappings-and-dynamic-arrays
+
+* Re-Entrancy and Checks-Effects-Interaction Pattern
+
+  * You are eventually wondering why we don't do the following:
+
+```solidity
+function withdrawAllMoney(address payable _to) public {
+    _to.transfer(balanceReceived[msg.sender]);
+    balanceReceived[msg.sender] = 0;
+}
+```
+  *  This follows the so-called Checks-Effects-Interaction pattern. As a rule of thumb: You interact with outside addresses last, no matter what. Unless you have a trusted source. So, first set your Variables to the state you want, as if someone could call back to the Smart Contract before you can execute the next line after .transfer(...). Read more about this here: https://fravoll.github.io/solidity-patterns/checks_effects_interactions.html
+
+## Mappings: A Wallet Example
+* [ExampleMapping2](contracts-section-5/ExampleMapping2.sol)
+
+## Structs vs Child Contracts
+* [ExampleStructs](contracts-section-5/ExampleMapping2.sol)
