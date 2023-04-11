@@ -869,4 +869,360 @@ function withdrawAllMoney(address payable _to) public {
 * [ExampleMapping2](contracts-section-5/ExampleMapping2.sol)
 
 ## Structs vs Child Contracts
-* [ExampleStructs](contracts-section-5/ExampleMapping2.sol)
+* [LAB](https://ethereum-blockchain-developer.com/2022-04-smart-wallet/02-structs/)
+
+* [ExampleStruct](contracts-section-5/ExampleStruct.sol)
+
+* What is better: Solidity struct vs Child Contract?
+
+* Most of the time, its better to save on gas costs and use structs. This can also include very complex data structures as you will see later.
+
+* Good reasons to use Structs over Child Contract:
+
+  * Saving Gas Costs! Deploying Child Contracts is simply more expensive.
+  * Saving Compexity: Every time you need to access a child contracts property or variable, it needs to go through the child contracts address. For structs, internally, that's just an keccak hash for a lookup at the storage location.
+  * DRY/KISS principle (Don't repeat yourself, keep is simple, stupid): Contracts are code. Every time you deploy the same contract with the same code you basically repeated yourself. And its not really simple either.
+  * Attack Vector: Contracts are running on its own address. If you have a set of getter and setter functions, there is a chance you need to have access lists or permissions that need to be managed separately.
+
+* Having said all this, there are also good reasons for using Child Contracts over Structs:
+  * Contract can have any code you want and that means the power of composability. You can put the contracts together like lego pieces and each contrac can have its own logic built in.
+  * Smaller Contracts if the code is split across several contracts. In the particular example above, you don't need to get payments from the wallet contract, you can get the payments from the child contract.
+  * Access: Contracts have their own address, can have their own data structures and their own interfaces.
+
+* In general, as a rule of thumb, normally you'd use structs, unless you need special logic, then you take contracts.
+
+## Structs and Mappings
+
+* [LAB](https://ethereum-blockchain-developer.com/2022-04-smart-wallet/03-structs-and-mappings/)
+
+* [ExampleMappingStruct](contracts-section-5/ExampleMappingStruct.sol)
+
+* Rule of Thumb
+  * The Rule of Thumb should always be: Do only the most necessary functions on the blockchain, and everything else off-chain. But for sake of explaining Structs, we will track every single payment in the greatest detail possible with our Smart Contract.
+
+
+* Mapping has no Lenght
+  * Mappings have no length. It's important to understand this. Arrays have a length, but, because how mappings are stored differently, they do not have a length.
+
+  * Let's say you have a mapping mapping(uint => uint) myMapping, then all elements myMapping[0], myMapping[1], myMapping[123123], ... are already initialized with the default value. If you map uint to uint, then you map key-type "uint" to value-type "uint".
+
+* Structs are initialized with their default value
+  * Similar to anything else in Solidity, structs are initialized with their default value as well.
+  * If you have a struct
+  * and you have a mapping mapping(uint => Transaction) myMapping, then you can access already all possible uint keys with the default values. This would produce no error:
+myMapping[0].amount, or myMapping[123123].amount, or myMapping[5555].timestamp.
+  * Similar, you can set any value for any mapping key:
+
+  * myMapping[1].amount = 123 is perfectly fine.
+
+
+```solidity
+ struct Transaction {
+     uint amount;
+    uint timestamp;
+}
+```
+
+## Exceptions: Require
+
+* [LAB](https://ethereum-blockchain-developer.com/2022-04-smart-wallet/04-exceptions-require/)
+
+* [ExampleExceptionRequire](contracts-section-5/ExampleExceptionRequire.sol)
+
+* Before heading to the next step, try yourself first to replace the if/else with a require()
+* Require is here for user-input validation and if it evaluates to false, it will throw an exception.
+* For example require(false) or require(1 == 0) will throw an exception. You can optionally add an error message require(false, "Some Error Message")
+
+
+
+## Exceptions: Asserts
+
+* [LAB](https://ethereum-blockchain-developer.com/2022-04-smart-wallet/05-exceptions-assert/)
+
+* [ExampleExceptionAssert](contracts-section-5/ExampleExceptionAssert.sol)
+
+* Asserts are here to check states of your Smart Contract that should never be violated. For example: a balance can only get bigger if we add values or get smaller if we reduce values.
+
+## Try/Catch In Solidity
+
+* There is a new concept in Solidity since Solidity 0.6, which allows for basic try/catch inside a Smart Contract. Before that you had to use constructs like address.call (which we will do later in the course as well). But here I quickly want to give you a hint of what's possible now with Error handling.
+
+
+* [LAB](https://ethereum-blockchain-developer.com/2022-04-smart-wallet/05-exceptions-assert/)
+
+* [ExampleTryCatch](contracts-section-5/ExampleTryCatch.sol)
+
+* Named Exceptions and Custom Errors
+  * Another new concept is Named Exceptions. They are defined in your Contract, but they can't be really caught (yet) by (try/catch), which somehow makes them problematic. I still think they are a great addition.
+  * So, by default, when require evaluates to false, it will revert with a generic Error(string) error. You can define other Errors here. Let me give you an example:
+  * With this, you can give certain arguments, like a state of balance or other things, to the outside world before aborting the transaction and rolling back.
+
+```sol
+//SPDX-License-Identifier: MIT
+pragma solidity 0.8.14;
+
+contract WillThrow {
+    error ThisIsACustomError(string, string);
+    function aFunction() public pure {
+        revert ThisIsACustomError("Text 1", "text message 2");
+    }
+}
+```
+
+## Low-Level Solidity Calls In-Depth
+
+* [LAB](https://ethereum-blockchain-developer.com/2022-04-smart-wallet/07-low-level-calls-in-depth/)
+
+* [ExampleSendTransfer](contracts-section-5/ExampleSendTransfer.sol)
+* [ExampleContractCall](contracts-section-5/ExampleContractCall.sol)
+
+* Difference .send and .transfer
+  * There is another function called .send(...) which works like .transfer(...), but with a major difference: If the target address is a contract and the transfer fails, then .transfer will result in an exception and .send will simply return false, but the transaction won't fail.
+  * **Always check the return value of low level send functions.** Ideally with an require(sentSuccessful) or so.
+
+* Pull over Push
+  * It's always better to let users withdraw money instead of pushing the funds. Consider a game. Two players play against each other. Last round, a player wins. In the normal world, you'd directly push the funds to the winning user. But that's a bad pattern. Better to credit the user and let him withdraw (pull!) the money in a separate withdraw-function later on.
+
+* Sending More Gas to Smart Contracts
+  * Of course, it would be great if you can call smart contracts from other smart contracts and also send a value, as a well as, more gas.
+  * There are two ways to achieve that:
+    * External function calls on contract instances
+    * Low-Level calls on the address
+
+* Re-Entrancy
+  * Be careful here with so-called re-entrency attacks. If you provide enough gas for the called contract to execute arbitary logic, then its also possible for the smart contract to call back into the calling contract and potentially change state variables.
+
+  * Always try to follow the so-called checks-effects-interactions pattern, where the external smart contract interaction comes last.
+
+
+## Complex Variable
+
+* Advanced Datastructures
+
+### Mapping
+
+* Like Hash mAPS
+* mapping(_keyType => _valueType) name;
+* The _keyType can be any elementary type. This means it can be any of the built-in value types plus bytes and string.
+* _valueType can be any type, including mappings.
+
+```sol
+mapping(address => bool) addressAllowed;
+addressAllowed[someAddress] = true;
+```
+
+* All values are initialized by default;
+* Mappings don't have a "length";
+* Public state variables of mappings become a getter;
+* **Iterable mappings can be implemented using libraries**;
+
+### Structs
+
+* Create your own custom types
+
+```sol
+
+struct Funder {
+  address addr;
+  uint amount;
+}
+
+Funder _funder;
+_funder.addr = 0x123;
+_funder.amount = 5000;
+
+```
+
+* Members of the Struct can not be of the type of the struct;
+* It is better to define structs than objects;
+  * Gas consumption
+
+### Mappings and Structs
+
+```sol
+
+struct MyStruct {
+  uint var1;
+  uint var2;
+}
+
+mapping(uint => MyStruct) public someVar;
+```
+
+### Arrays
+
+* Fixed or Dynamic Size;
+* T[k] => fixed size of type T with k elements;
+* T[] => dynamic size of type T;
+* T[][5] => is 5 dynamic sized arrays (reversed notation)
+
+* Have two members
+  * Length
+  * Push(element)
+
+* Be careful with Arrays because of Gas costs!
+  * In fact: It's mostly better to use mappings
+
+
+### Enum
+
+* Enums are one way to create a user-defined type in Solidity;
+* Will be integers internally
+  * It fits in uint8 -> 0-255 in the ABI
+  * More than 256 values -> uint16
+
+```sol
+
+enum ActionChoices { GoLeft, GoRight, GoStraight, SitStill }
+ActionChoices choice;
+ActionChoices constant defaultChoice = ActionChoices.GoStraight;
+
+```
+
+### Key Take-Aways
+
+* Mappings are like Hash-Maps
+* Mappings are usually preferred over Arrays because of Gas
+* Structs define your own Datatype
+* Mappings and Structs are a powerful combination
+
+### Error and Exceptions
+
+* Throw, Require, Assert, Revert
+
+### Transactions and Errors
+
+* Transactions are atomic
+* Errors are "state reverting"
+* Require, assert, revert
+  * Previously "throw;"
+* They cascande, except for low level functions
+  * Address.send, address.call, address.delegatecall, address.staticcall
+* Catching is possible within Solidity
+
+* Revert and require can return an error string
+
+
+### Assert vs. Require
+
+* Revert operation (0xfd) for require
+  * Returns remaining gas
+* Invalid operation (0xfe) for assert
+  * Consume all gas
+
+* Assert used to validate invariants
+* Require used to validate user input
+
+
+### Assert is triggered
+* Out of bounds index
+* Division by zero or module zero (5/0 or 23%0)
+* Byteshifting by a negative amount
+* Convert a value too big or negative to enum
+* Zero-initialized variable of internal function type
+* ... Or assert(X) where X evaluates to false
+
+
+### Require is triggered
+* Require(x) where x evaluates to false
+* function call via message call but it doesn't finish properly
+  * Except low-level function calls
+* External function call to a contract not containing any code
+* Your contract receives ether without the payable modifier
+* Your contract receives ether at a getter function
+* Address.transfer() fails
+
+### Throw
+* This is outdated, deprecated
+* Removed in Solidity 0.4.10
+
+```sol
+if(msg.sender != owner) { throw;}
+vs
+require(msg.sender == owner);
+```
+
+### Revert
+* Reverts the transaction
+* Whatever you prefer
+  * I prefer require
+
+```sol
+if(amount > msg.value / 2 ether) {
+  revert("Not enough Ether provided.");
+}
+// Alternative way to do it:
+require(amount <= msg.value / 2 ether, "Not enough Ether provided");
+
+```
+
+### Try/Catch
+
+* Catch errors from within inter-contract calls
+* Catch Error -> revert
+* Catch Panic -> assert / division by zero / non-recoverable errors
+* Catch rest: Custom Errors
+* Custom errors: error MyCustomError(paramType1, paramType2, ...)
+
+### Key Take-Aways
+
+* Use require for input validation
+* Use assert for checking internal states
+* For both: evaluate to true -> transaction abort
+  * And revert
+
+### Accounts
+* Understanding Accounts and Transferring Ether
+
+* Externally Owned Accounts (EOA) and Contract Accounts - Ethereum Blockchain
+  * EOA
+    * Created with a private key
+    * The EOA is allowed to call a contract
+  * Can the contract call in on a contract without being initialized?
+    * No! A contract by itself cannot do anything.
+    * But a EOA can call a contract, which then during running that transaction, calls another account, calls another contract
+
+### Address
+
+* Remember: All information is public
+  * It's a global database
+
+* Address has two important members:
+  * .balance
+  * .transfer(amount)
+
+* address my Address = "0xabc123..."
+  * myAddress.balance => balance in Wei
+  * myAddress.transfer(amountInWei) => Transfers from the smart contract to the address an amount in Wei
+
+### Address - Low-Level calls
+
+* There are also low-level calls
+  * .send() returns a Boolean, doesn't cascade exceptions
+  * .call(){gas:..., value:...}() let's you forward a specific amount of gas, also returns a boolean
+
+* Be-aware of possible re-entrancy dangers
+
+* .send, .transfer both only transfer 2300 gas along
+  * Be aware when sending funds to smart contract
+
+### Key Take-Aways
+
+* All information is public
+  * Ethers are not stored in your wallet, but on the Blockchain
+
+* Addresses have a balance and can transfer Ether
+
+* Global Objects tell you what happens inside the Transaction
+
+## The Smart Contract Wallet Implementation
+
+* Requirements:
+  * Wallet has 1 Owner
+  * Receive funds with a fallback function
+  * Spend money on EOA and Contracts
+  * Give Allowance to other people
+  * Set a new owner with 3-ou-of-5 guardians
+
+* TODO THE ABOVE IMPLEMENTATION!
+
