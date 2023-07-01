@@ -1226,3 +1226,58 @@ require(amount <= msg.value / 2 ether, "Not enough Ether provided");
 
 * TODO THE ABOVE IMPLEMENTATION!
 
+# Section 6: [Project] ERC20 Token Sale
+
+## Web3.js Introduction
+
+* [LAB](https://ethereum-blockchain-developer.com/2022-05-erc20-token/01-web3js-introduction/)
+* [Web3.js Documentation](https://web3js.readthedocs.io/en/v1.8.2/)
+* [accounts.js](contracts-section-6/accounts.js)
+
+* Web3.js is a JavaScript library that lets you interact with a blockchain node via its RPC interface. That can be a RESTful HTTP interface, or WebSockets.
+
+* Web3.js is logically grouped into components, trying to somehow map the RPC interface definition. If we look at a typical blockchain node, go-ethereum, you will see certain namespaces https://geth.ethereum.org/docs/rpc/server. And if you direct your attention the Ethereum Page (https://ethereum.org/en/developers/docs/apis/json-rpc/) about JSON-RPC, you see that there are functions like eth_blockNumber and eth_getBalance to query (or even write) information from/to the blockchain.
+
+* If we have a closer look at Web3.js you see that there's a component called web3-eth, which you can reach then under web3.eth. There are JavaScript functions to interact with a blockchain node, for example web3.eth.getBalance(...). By calling this JavaScript function, the web3 library would go talk to the Blockchain Node you're connected to and execute a JSON RPC call called eth_getBalance with the parameter.
+
+From the ethereum.org website (https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_getbalance), this would be an example using curl:
+```curl
+// Request
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x407d73d8a49eeb85d32cf465507dd71d507100c1", "latest"],"id":1}'
+// Result
+{
+  "id":1,
+  "jsonrpc": "2.0",
+  "result": "0x0234c8a3397aab58" // 158972490234375000
+}
+```
+### Web3 Providers: HTTP vs WebSocket vs IPC
+
+* In the early days, WebSockets were not supported really well. Most connections were made with a standard HTTP polling method. Right now, the most standard way for a web-app is the WebSocket provider. WebSockets have the major advantage that there is no polling needed, you can subscribe to certain events as you will see in the next lecture.
+
+* Web3.js is not sending the requests directly, it abstracts it away into these providers. If you use MetaMask then one of the providers is already injected into the website itself. So, using this is, in the end, exactly the same as connecting directly to a blockchain node.
+
+* In Remix, via the command line (or terminal?!) you can directly interact with web3js.
+* web3.eth.getAccounts()
+
+## Global Objects
+* Wondering where "web3" comes from? It is one of many objects that are globally injected in Remix.
+* If you are working with React or Vue, you would need to download and install web3js yourself (npm install ... or yarn install...).
+
+
+
+## Understanding The ABI Array
+* [LAB](https://ethereum-blockchain-developer.com/2022-05-erc20-token/02-web3js-abi-array/)
+* [updateUint.js](contracts-section-6/updateUint.js)
+* [MyContract.sol](contracts-section-6/MyContract.sol)
+
+### What is the ABI Array?
+* ABI stands for Application Binary Interface
+* When you compile a smart contract then you get bytecode which gets deployed. Inside there are assembly opcodes telling the EVM during execution of a smart contract where to jump to. Those jump destinations are the first 4 bytes of the keccak hash of the function signature.
+* Best is, we're looking through the lens of the debugger into the execution of a smart contract and run through that.
+* The ABI Array contains all functions, inputs and outputs, as well as all variables and their types from a smart contract.
+* If you open up the artifacts/MyContract.json file in the file-explorer, you can scroll all the way to the bottom.
+
+## Events As Return Variables
+
+* [SampleEvent.sol](contracts-section-6/SampleEvent.sol)
