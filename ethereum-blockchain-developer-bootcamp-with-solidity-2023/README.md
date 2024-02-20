@@ -1178,7 +1178,7 @@ require(amount <= msg.value / 2 ether, "Not enough Ether provided");
   * EOA
     * Created with a private key
     * The EOA is allowed to call a contract
-  * Can the contract call in on a contract without being initialized?
+  * Can the contract call a contract without being initialized?
     * No! A contract by itself cannot do anything.
     * But a EOA can call a contract, which then during running that transaction, calls another account, calls another contract
 
