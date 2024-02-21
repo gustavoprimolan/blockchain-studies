@@ -190,3 +190,8 @@
 * [2017 Was Bitcoin's Year. 2018 Will Be Ethereum's](https://www.coindesk.com/markets/2017/12/27/2017-was-bitcoins-year-2018-will-be-ethereums/)
 * [What is Cryptocurrency: Everything You Need To Know](https://blockgeeks.com/guides/what-is-cryptocurrency/)
 * [What is the Difference Between Public and Permissioned Blockchains?](https://www.coindesk.com/learn/how-does-blockchain-technology-work/)
+
+
+### Quiz
+
+* 1 - In a public blockchain, a participant can join and leave the blockchain as and when they wish. True
