@@ -2,7 +2,9 @@
 * [Course Link](https://www.coursera.org/learn/blockchain-basics?specialization=blockchain)
 
 
-# Module 1: Bitcoin & Blockchain
+# Module 1: Blockchain Defined
+
+## Bitcoin & Blockchain
 
 ## What is a Blokchain?
 
@@ -195,3 +197,46 @@
 ### Quiz
 
 * 1 - In a public blockchain, a participant can join and leave the blockchain as and when they wish. True
+
+
+## Week 1 Evaluation: Blockchain Defined
+
+* Quiz Directions
+  * Task 1: Understanding the Genesis Block (Q2-Q3)
+    * In this task, you will explore the Genesis blocks (i.e. Block 0), for 2 different implementations of Blockchain, i.e. Bitcoin Blockchain (resource 1 or resource 2) and Ethereum Blockchain (resource 3). You need to check the previous block hash, transactions, and the reward.
+
+  * Task 2: Exploring a block in the Bitcoin Blockchain (Q4-Q5)
+    * In this task, you will inspect and explore block #490624 on either resource 1 or resource 2 provided above. Locate the hash of this block, the hash of the previous block, and the number of transactions in that block. You may explore other things contained in the block as well. After this, you will go to the previous block (by block number) and verify the hash of this block is the same as mentioned in the block you were exploring before.
+
+* Quiz Resources
+  * [Blockchain](https://www.blockchain.com/explorer)
+    * Description: Blockchain is the world's leading software platform for digital assets. Offering the largest production blockchain platform in the world and using new technology to build a radically better financial system. You can use this website to explore and answer questions related to Bitcoin Blockchain.
+
+  * [Bitcoin Block Explorer](https://www.blockexplorer.com/)
+    * Description: Block Explorer is an open-source web tool that allows you to view information about blocks, addresses, and transactions on the Bitcoin blockchain. You can use this website to explore and answer questions related to Bitcoin Blockchain.
+
+  * [Etherscan](https://etherscan.io/)
+    * Description: EtherScan is a Block Explorer, Search, API, and Analytics Platform for Ethereum, a decentralized smart contracts platform. You can use this website to explore and answer questions related to Ethereum Blockchain.
+
+  * Note: Use Blockchain or Bitcoin Block Explorer to explore Bitcoin Blockchain. Use Etherscan to explore Ethereum Blockchain. 
+
+
+## Quiz:
+
+* 1 - What is the genesis block?
+  * Answer: The first block of a Blockchain
+* 2 - Inspect and explore block #0 using https://www.blockchain.com/btc/block/0 to solve the below question. How many transactions are there in the Genesis block in Bitcoin?
+  * Answer: 1
+* 3 - Question 3 Inspect and explore block #0 using this link (https://etherscan.io/block/0) to solve the below question. How many transactions are there in the Genesis block in Ethereum (other than the transaction for Miner fee)?
+  * Answer: 8893
+* 4 - Inspect and explore block #490624 using this link (https://blockchain.info/block/000000000000000000d4c8b9d5388e42bf084e29546357c63cba8324ed4ec8bf) to solve the below question. What is the hash of the previous block for Bitcoin block #490624? Copy and paste the answer into the box below.
+  * Answer: 0000000000000000004239f2a01d8f579bc0dbb214d0f874ece5db587bee3457
+* 5 - Inspect and explore block #490624 using this link (https://www.blockchain.com/explorer/blocks/btc/000000000000000000d4c8b9d5388e42bf084e29546357c63cba8324ed4ec8bf) to solve the below question. Which of these fields is present in a Bitcoin block summary?
+  * Answer: Difficulty
+* 6 - Where are the transactions recorded in a blockchain?
+  * On a distributed immutable ledger
+* 7 - What are UTXOs in a Bitcoin Blockchain?
+  * These form the input and outputs for transactions
+* 8 - Blockchain was created to support security and trust in a  **DECENTRALIZED TRUSTLESS** environment of the cryptocurrency Bitcoin.
+* 9 - What/Who are miners in a blockchain?
+  * Computers that validate and process blockchain transactions and solve the cryptographic puzzle to add new blocks
