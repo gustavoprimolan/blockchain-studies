@@ -87,7 +87,7 @@
 * 4 - Total input amount and output amount
 
 
-[BTC BLOCK ZEROU - Where all began](https://www.blockchain.com/explorer/blocks/btc/000000)
+[BTC BLOCK ZERO - Where all began](https://www.blockchain.com/explorer/blocks/btc/000000)
 
 * Summarize
   * The concept of UTXO defines the inputs and outputs of such a transaction. Once a block is verified an algorithmic-ally agreed upon by the miners, it is added to the chain of blocks, namely the Blockchain.
@@ -240,3 +240,256 @@
 * 8 - Blockchain was created to support security and trust in a  **DECENTRALIZED TRUSTLESS** environment of the cryptocurrency Bitcoin.
 * 9 - What/Who are miners in a blockchain?
   * Computers that validate and process blockchain transactions and solve the cryptographic puzzle to add new blocks
+
+
+## Bitcoin Mining
+
+* [What is bitcoin mining?](https://www.investopedia.com/terms/b/bitcoin-mining.asp)
+
+## Bitcoin Halving
+
+* Halving is an important concept in Bitcoin mining. At first, the mining reward was 50 BTC for solving the hash. About every four years, or 210,000 blocks, the reward is cut in half. So rewards were cut to 25 in 2012, 12.5 in 2016, and 6.25 in 2020. The next halving is expected to occur in 2024, when the reward will reduce to 3.125, followed by a reduction to 1.5625 around 2028.
+
+* The last bitcoin is expected to be mined somewhere around 2140. All 21 million bitcoins will have been mined at that time, and miners will depend solely on fees to maintain the network.
+
+![](imgs/btc-halving.png)
+
+
+# Module 2: Ethereum Blockchain
+
+## Ethereum Blockchain: Smart Contracts
+
+* Around 2013, a framework for code execution was introduced by Ethereum Founders.
+![](imgs/bitcoin-stack-vs-ethereum-stack.png)
+
+* Ethereum took a significant step towards transforming the blockchain into a computational framework that opened up a whole world of oppotunities in the decentralized realm.
+* Ethereum supports smart contracts and virtual machine on which smart contracts execute.
+* Smart contracts in turn enable decentralized applcication that accomplish more than a transfer of value
+
+* What is a smart contract?
+  * Pice of code deployed in the blockchain node;
+  * Execution is initiated by a message embedded in the transaction;
+  * Enables transaction that may carry out more sophisticated operations
+    * E.g: A transaction could require a conditional transfer, it may requrie some evaluation, may need more than one transfer assets.
+
+* How do you write a smart contract?
+  * Structurally, s asmart contract resembles a class definition in an object oriented design.
+  * It has data, fucntion or methods with modifiers public or private, along with getter and set of functions;
+  * Specific programming languages have been designed for coding smart contracts;
+    * Solidity is one such langauge
+
+![](imgs/solidity-example.png)
+
+* pragma - indicates the version of the solidity language
+* contract's name
+
+* Where does the code in the smart contract get executed?
+  * We need a computational infrastructure to execute any arbitrary code
+  * Every node in Ethereum network should be able to execute the code irrespective of that underlying type of hardware or operating system
+
+* Ethereum Virtual Machine, EVM
+  * An EVM provides a run anywhere obstruction layer ofr the contract
+  * A smart contract written a high level programming language is translated into EVM byte code, and then, deployed on the Ethereum Virtual Machine, EVM.
+  * Every node will host the same smart contract codes on the EVM
+
+### Resources:
+
+* [What is Ethereum?](https://ethereum.org/en/what-is-ethereum)
+* [Smart Contracts: The Blockchain Technology That Will Replace Lawyers](https://blockgeeks.com/guides/smart-contracts/)
+* [Introduction to Smart Contracts](https://docs.soliditylang.org/en/develop/introduction-to-smart-contracts.html)
+
+### Quiz:
+
+* Question 1 - What allows for the execution of code in the Ethereum Blockchain, while enhancing the basic value transfer capability of the Bitcoin Blockchain?     
+  * A: Smart Contracts
+
+* Question 2 - Solidity has data, functions or methods with modifiers, along with getter and setter functions. True or False?
+  * A: True
+
+## Ethereum Structure
+
+* Bitcoin blocking state was defined in terms of unspent transaction outputs UTXOs and a referente implementation of the Wallet application that held the account reference.
+
+![](imgs/utxo-example-2.png)
+
+* Ethereum formally introduce the concept of an account as a part of the protocol
+  * The account is the originator and the target of a transaction.
+  * A transaction directly updates the account balances as opposed to maintaining the state such as in the bitcoin UTXOs.
+
+* Accounts - 2 Types
+  * Externally Owned Accounts or EOA
+    * EOA are controlled by private keys
+    * Needed to participate in the Ethereum network
+    * Interacts with the blockchain using transactions
+    * Has a coin balance
+  * Contract Accounts or CA
+    * CA are controlled by the code and can be activated only by an EOA
+    * Represents a smart contract
+    * Has a coin balance
+
+* The participant node can send transaction for Ether transfer or it can send transaction to invoke a smart contract code or both.
+  * Both types of transaction require fees
+* An account must have sufficient balance to meet the fees needed for the transactions activated
+  * Fees are paid in Wei
+    * Wei is a lower denomination of Ether
+    * One Ether 10 to the power of 18 Weis.
+
+![](imgs/ether-x-wei.png)
+
+* Transaction in Ethereum includes:
+  * The recipient of the message;
+  * Digital signature of the sender authorizing the transfer
+  * Amount of Wei to transfer
+  * An optional data field or payload that contains a message to a contract
+  * STARTGAS (maximum number of computational steps the transaction is allowed)
+  * GASPRICE (fee for computations)
+![](imgs/ethereum-transaction-overview.png)
+
+
+* Ethereum block structure:
+  * Header
+  * Transaction
+  * Runner-up block headers
+  * Block details
+![](imgs/ethereum-block-example.png)
+* [LINK](https://etherscan.io/block/4446308)
+
+
+### Resources: Ethereum Structure
+
+* [Ethereum Whitepaper: A Next-Generation Smart Contract and Decentralized Application Platform](https://ethereum.org/en/whitepaper)
+* [Account Management](https://ethereum.org/en/developers/docs/accounts)
+* [Native: Account management](https://geth.ethereum.org/docs/developers/dapp-developer/native-accounts)
+
+
+### Quiz
+
+* Question 1: How many types of accounts are on Ethereum?
+  * A: 2
+* Question 2: The **ACCOUNTS** can send transactions for ether transfer or they can send send transactions to invoke a smart contract code.
+
+* Question 3: What is the smallest denomination of cryptocurrency on Ethereum?
+  * A: Wei
+
+
+## Ethereum Operations
+
+![](imgs/ethereum-transfer-example.png)
+
+* An Ethereum node is a computational system representing a **business entity** or an **individual participant**.
+  * An Ethereum full node hosts the software needed for transaction initiation, validation, mining, block creation, smart contract exectuion and the invocation for a smart contract.
+  * Smart contract is designed, developed, compiled and deployed on the EVM that can be more than one smart contract in an EVM.
+  * When the target address in a transaction is a smart contract, the execution code corresponding to the smart contract is activated and executed on the EVM.
+    * The input neeeded for this execution is extracted from the payload field of the transaction.
+
+![](imgs/ethereum-smart-contract-execution.png)
+
+* Blockchain maintains both the stae hash and the receipt hash
+
+* Transaction validation involves
+  * Checking the time-stamp
+  * The nonce combination to be valid
+  * The availability of sufficient fees for execution
+
+* Miner nodes
+  * Receive;
+  * Verify;
+  * Gather;
+  * Execute Transactions;
+  * The in-work smart contract code are executed by all miners;
+  * Validated transactions are broadcast and gathered for block creation;
+  * The consensus protocol used is a memory-based rather than a CPU-based proof of work;
+
+### Resources: Ethereum Operations
+
+* [How Does Ethereum Work?](https://www.coindesk.com/learn/how-does-ethereum-work/)
+* [What Is Meant By The Term "Gas"?](https://ethereum.stackexchange.com/questions/3/what-is-meant-by-the-term-gas)
+
+### Quiz
+
+* 1 - **ETHEREUM FULL NODE** hosts the software needed for transaction initiation, validation, mining, block creation, and smart contract execution;
+* 2 - **MINER NODES** receive, verify, gather and execute transactions
+* 3 - Any changes to the value of a state variable in a smart contract are stored on the blockchain.
+  * A: True
+
+## Incetive Model
+
+* Ethereum uses an incentive-based model for block creation - Gas related in a transaction
+  * Every action in Ethereum requires crypto fuel, or gas.
+  * Gas Points are used to spify the fees inside of Ehter, for ease of computation using standard values.
+  * Ethereum has specified gas points for each type of operation
+  * Mining process compute gas points required for execution of a transaction
+  * If the fee specified and the gas point in the transaction are not sufficient, it is rejected
+  * The gas points needed for execution must be in the account balance for the execution to happen
+    * If there is any amount left over after the execution of a transaction, it is returned tot eh originating account
+![](imgs/sample-fees-in-gas-points.png)
+
+* Gas Related items in a block
+  * Gas Limit
+    * The amount of gas points available for a block to spend
+    * Example: If a block specifies a limit of 1 million 5 hundred thousand units of gas, and a basic Ether transaction fee is 21,000, this particular Ethereum block can fit about 70 plain Ether transacations. If we add smart contract transactions also into this block, that usually requires more gas, and the number of transactions for this block will likely be lower
+  * Gas Spent
+    * Actual amount of gas spent at the completion of the block creation.
+
+* Mining Incentive Model
+  * Proof of Work Puzzle Winner
+  * Miner that creates a new block is incetivized with the base fees of three Ethers, and the transaction fees in Ethereum blockchain.
+  * The winning miner also gets the fees, gas points for execution of a smart contract transactions
+  * There may be other miners who also solve the puzzle besides the winner
+    * These miner will solve the puzzle, but didn't win the lbock are called Ommers
+    * The blocks created by them are called Ommer Blocks.
+    * These are added as Ommer blocks, or side blocks, to the main chain
+    * Ommer miners also get a small percentage of the total gas points
+
+### Resources: Incentive Model
+
+* [Vitalik Buterin Doubles Down on Ethereum Incentive Strategy](https://www.coindesk.com/markets/2017/04/10/vitalik-buterin-doubles-down-on-ethereum-incentive-strategy/)
+* [Ether](https://ethereum.org/en/eth)
+* [Proof of Work vs Proof of Stake: Basic Mining Guide](https://blockgeeks.com/guides/proof-of-work-vs-proof-of-stake/)
+
+* Proof of Work vs Proof of Stake
+![](imgs/proofofworkvsproofofstake-1.jpg)
+
+### Quiz
+
+* 1 - GASLIMIT is the actual amount of gas spent at the completion of the Block creation.
+  * A: False - GASSPENT is.
+
+* 2 - What are miners who solved the puzzle but didn't win the block creation called?
+  * A: Ommers
+
+* 3 - **MINERS OF A BLOCK** are paid fees for the creation of a block
+
+## Evaluation: Ethereum Blockchain - Week 2
+
+## Quiz
+
+* Question 1 - Inspect and explore block #4390176 using [this link](https://etherscan.io/block/4390176) to solve the below question. What is the previous block hash of block #4390176 in Ethereum Blockchain? Provide the answer in the box below.
+  * A: 0xc253f0917b33b2947b4d9cdb7ad656cc0233ef1781984384284f3a91810a8a36
+
+* Question 2 - Inspect and explore block #4390176 using [this link](https://etherscan.io/block/4390176) to solve the below question. What is the total difficulty for block #4390176 in Ethereum Blockchain? Provide the answer in the box below.
+  * A: 1,226,797,074,502,984,598,563
+
+* Question 3 Inspect and explore the transaction with the hash “0x5edb69874d0900d8857468fbe53715cc1a58137709b8b70e46299bf10983dc09“ using [this link](https://etherscan.io/tx/0x5edb69874d0900d8857468fbe53715cc1a58137709b8b70e46299bf10983dc09). Approximately, how many Ethers are transferred in this transaction?
+  * A: 913.26840646995791384 ETH
+
+* Question 4 - Inspect and explore the transaction with the hash “0x5edb69874d0900d8857468fbe53715cc1a58137709b8b70e46299bf10983dc09“ using this link. What is the address of
+the sender in this transaction? Provide the answer below in the textbox.
+  * A: 0xF9fbA58d8345bD3100C5AdF3b8B51938E5dA0a9D
+
+* Question 5 - Which of the following is true about an externally owned account (EOA) in Ethereum Homestead?
+  * A: EOAs can send transactions (ether transfer or invoke a contract code)
+
+* Question 6 - External Owned Accounts (EOA) are controlled by **PRIVATE KEY**
+
+* Question 7 - What is the differentiating factor between the Ethereum Blockchain and the Bitcoin blockchain?
+  * Smart contracts
+
+* Question 9 - What is the correct sequence involved in a block creation:
+  * 1. Transactions validated
+  * 2. Transactions Bundled & broadcasted
+  * 3. Transaction initiated
+  * 4. Block added to the local chain and propagated to the network.
+  * 5. Proof of work consensus problem solved
+
+  * A: 3, 1, 2, 5, 4
