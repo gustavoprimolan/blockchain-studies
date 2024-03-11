@@ -462,7 +462,7 @@
 
 ## Evaluation: Ethereum Blockchain - Week 2
 
-## Quiz
+### Quiz
 
 * Question 1 - Inspect and explore block #4390176 using [this link](https://etherscan.io/block/4390176) to solve the below question. What is the previous block hash of block #4390176 in Ethereum Blockchain? Provide the answer in the box below.
   * A: 0xc253f0917b33b2947b4d9cdb7ad656cc0233ef1781984384284f3a91810a8a36
@@ -493,3 +493,202 @@ the sender in this transaction? Provide the answer below in the textbox.
   * 5. Proof of work consensus problem solved
 
   * A: 3, 1, 2, 5, 4
+
+
+# Week 3 - Algorithms & Techniques
+
+## Public-Key Cryptography
+
+* 2 techniques are predominatly used for securing the chain and for efficient validation and verification
+  * Hashing
+  * Asymmetric key encryption
+
+* How do you identify the peer participants? how do you authorize and authenticate the transactions? How do you detect forged or faulty transactions?
+  * We can do these things by using Public-key cryptography algorithm that we'll discuss in thsi lesson
+
+* Simple symmetric key ecryption
+  * Same key is used for encryption and decryption - symmetric key
+  * E.g: Ceasar encryption
+    * Simplest one with alphabets of a message are shifted by a fixed number, and this number is called the Key
+![](imgs/caesar-encryption-eg.png)
+
+* Issues with Symmetric-Key Encryption:
+  * Easy to derive secret key from encrypted data
+  * How do you pass the key to the participant transaction?
+
+* Public-key cryptography
+  * Instead of a single secret key, it employs two different keys that take care of both the issues of symmetric key encryption
+  * Public-key is published, private key is kept safe and locked, typically using a passphrase;
+  * Encryption function holds two properties with a key pair
+  * The public-key private key pair has the unique quality that even though a data is encrypted with the private key, it can be decrypted with the corresponding public-key and vice versa
+![](imgs/public-private-key-eg.png)
+
+* E.g: Authenticate the sender and the receiver. We'll examine just one common use of a symmetric key encryption
+  * Let's say a participant in Buffalo wants to transact with the participant in Kathmandu.
+  * Instead of sending just a simple message, a participant in Buffalo will send a transaction data encrypted by Buffalo's private key, and then encrypted by Kathmandu's public key.
+  * Kathmandu will first decrypt the data using its own private key, then use Buffalo's public key to decrypt assigned transaction data.
+  * This ensures that only Kathmandu can decrypt and receive the data and that only Buffalo could have sent the data
+![](imgs/buffalo-kathmandu-eg.png)
+
+* A popular implementation of public key, private key is the Rivest Shamir Adleman (RSA) algorithm
+  * Common application of RSA is the passwordless user authentication, for example for accessing a virtual machine on Amazon cloud.
+
+* Rivest Shamir Adelman (RSA) Algorithm
+
+* Elliptic Curve Cryptography, ECC family of algorithms is used in the bitcoin as well as an Ethereum blockchain for generating the key pair
+
+* Why ECC not RSA?
+  * ECC is stronger than RSA for a given number of bits
+  * 256 bit ECC key pair is equal in strength to about 3072 bits of RSA key pair
+  * Bitcoin and Ethereum use ECC based algorithms for their encryption needs
+
+
+### Resources: Public-Key Cryptography
+
+* [What Is Public-Key Cryptography?](https://www.globalsign.com/en/ssl-information-center/what-is-public-key-cryptography)
+
+* [Asymmetric Cryptography (Public-Key Cryptography)](https://www.techtarget.com/searchsecurity/definition/asymmetric-cryptography)
+
+* [Public Key Cryptography - Computerphile](https://www.youtube.com/watch?v=GSIDS_lvRv4)
+
+* [A (Relatively Easy To Understand) Primer on Elliptic Curve Cryptography](https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography)
+
+### Quiz
+
+* 1 - A popular public-private key implementation known as Rivest-Shamir-Adelman (RSA) algorithm is used for the Bitcoin and Ethereum Blockchain. True or False? 
+  * A: False
+
+* 2 - For the simple symmetric key example discussed in the lecture, it is easy to derive the “secret” key from the encrypted data. True or False?      
+  * A: True - Please note that symmetric keys have other issues such (i) key distribution -- how do you send the key to the parties involved (ii) you need to create different secret key for different receivers, you cannot share the same key with different participants. On the contrary, in a public-key encryption, you can publish the public key for any participant to use and not reveal the private key. 
+
+* 3 - 256 bit ECC key-pair is equivalent in strength to approximately 3072-bit RSA key-pair. Thus ECC is much stronger encryption than RSA method. True or False? 
+  * a: True
+
+
+## Hashing
+
+* The private public key pair is a metaphorical passport to participating in transacting on the blockchain
+
+* What is hashing?
+  * A hash function or hashing transforms and maps an arbitrary length of input data value to a unique fixed length value.
+  * Input data can be a document, tree data, or a block data.
+  * Even a slight difference in the input data would produce a totally different hash output value.
+
+![](imgs/hash-example.png)
+
+
+* Hashing Requirements
+  * Algorithm should be one-way function
+  * Collision free
+    * There should be extremely low probability that two different datasets map onto the same hash value
+
+* Most common hash size now is 256 bits
+  * Common function are:
+    * SHA-3
+    * SHA-256
+    * Keccak
+
+* 256-bit hash value space is indeed very large
+  * 2<sup>256</sup> possible combinations of values
+  * That is approximately 10<sup>77</sup>
+
+* 2 different approaches for hashing based on how the constituent elements are organized
+  * Simple hash
+    * All the data items are linearly arranged and hashed
+  * Merkle tree hash
+    * In a tree-structured approach, the data is at the leaf nodes of the tree
+    * Leaves are pairwise hash to arrive at the same hash value as a simple hash
+
+* When is a tree-strucutred hash or a simple hash used?
+  * When we have a fixed number os items to be hashed, such as the items in a block header, and we are verifying the composite block integrity and not the individual item integrity, we use simple hash.
+  * When the number of items differ from block to block, for example, number of transactions, number of states, number of receipts, we use the tree structure for computing the hash
+    * Tree structure helps the efficiency of repeated operations, such as transaction modification and the state changes from one block to the next
+    * Log N versus N
+
+* In Ethereum, hashing is used to generate:
+  * Account Addresses
+  * Digital Signatures
+  * Trnasaction Hash
+  * State Hash
+  * Receipt Hash
+
+### Resources: Hashing
+
+* [What Is Hashing? Under The Hood of Blockchain](https://blockgeeks.com/guides/what-is-hashing/)
+* [SHA: Secure Hashing Algorithm - Computerphile](https://www.youtube.com/watch?v=DMtFhACPnTY)
+* [Hash Functions](https://www.cs.hmc.edu/~geoff/classes/hmc.cs070.200101/homework10/hashfuncs.html)
+* [Hashing Demo](https://academo.org/demos/SHA-256-hash-generator/)
+
+### Quiz
+
+* 1 - What is one of the requirements of secure hashing function?
+  * A: It is a one way function
+
+* 2 - What type of hash is used when there is a fixed number of items to be hashed, such as the items in a block header, and we are verifying the composite block integrity?
+  * Simple Hash
+
+* 3 - What type of hash function is used, when there is variable number of items to be hashed, suc as the many state changes in a block?
+  * Tree-structure hash
+
+* 4 - Keccak 256 is a commonly used algorithm for hash generation in Ethereum blockchain. True or False?
+  * True
+
+## Transaction Integrity
+
+* To manage the integrity of transaction:
+  * Secure & Unique Account Address
+    * We need a standard approach to uniquely identify the participants in the decentralized network
+  * Authorization of the transaction by the sender through digital signing
+  * Verification of the contet of the transaction is not modified
+
+* Combination of hashing and public key cryptography to solve these problems
+* Addresses of accounts are generated using public key, private key pair
+
+* 1 - 256-bit random number is generated, and designated as the private key
+  * Kept secure and locked using a passphare
+* 2 - An ECC (Elliptic-curve cryptography) Algorithm is applied to the private key, to get a unique public key
+  * Private public key pair
+* 3 - Then a hashing function is applied to the public key to obtain account address
+  * The address is shorter in size, only 20 bytes or 160 bits
+
+* Transaction for transferring assets should be:
+  * Authorized
+  * Non-repudiable
+  * Unmodifiable
+  * Digital Signature - First examined, the digital signing process, and then apply it to that transaction. Data is hash and encrypted.
+  * The receiver gets the original data, and the secure hash digitally signed.
+  * Receiver can recompute the hash of the original data received, and compare it with the received hash to veirfy the integrity of the document.
+
+* Consider the transaction to be that data
+  * 1 - Find the hash of the data fields of the transaction
+  * 2 - Encrypt that hash using the private key of the participant originating the trasnaction. Digitally signing the transaction to authorize and making the transaction non-repudiable
+  * 3 - This has just added to the transaction.
+    * It can be verified by others decrypting it using the public key of the sender of the transaction, and recomputing the hash of the transaction
+    * Compare the computed hash, and the hash received at the digital signature
+    * If that is a match, accept the transaction. Otherwise, reject it
+* Note that for the complete transaction verification, the timestamp, nonce, account balances, and sufficiency of fees are also verified.
+
+
+
+### Resources: Transaction Integrity
+
+* [How Safe Are Blockchains? It Depends](https://hbr.org/2017/03/how-safe-are-blockchains-it-depends)
+* [Blockchains: Embedding Integrity](https://infospectives.co.uk/blockchains-embedding-integrity/)
+
+### Quiz
+
+1 - Digital signing of a transaction/document involves, hashing the content of the document and then **ECRYPTING IT WITH PRIVATE KEY**
+
+## Securing Blockchain
+
+* Main components of Ethereum block:
+  * Block Header
+  * Transaction Hash
+  * Transaction Root
+  * State Hash
+  * State Root
+
+* Integrity of a block
+  * Block header contents contents not tampered with
+  * Transactions not tampered with
+  * State transitions are computed, hashed and verified
