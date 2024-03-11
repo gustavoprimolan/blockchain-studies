@@ -692,3 +692,85 @@ the sender in this transaction? Provide the answer below in the textbox.
   * Block header contents contents not tampered with
   * Transactions not tampered with
   * State transitions are computed, hashed and verified
+
+* In Ethereum, the block hash is the block of all the elements in the block header, including the transaction root and state root hashes.
+  * It is computed by applying a variant of SHA-3 algorithm called Keccak and all the items of the block header.
+
+* **A typical block has about 2,000 transactions in bitcoin and about 100 transaction Ethereum**
+
+* Hashes of transaction in a block are processed in a tree structure called Merkle tree hash.
+  * Merkle tree hash is also used for computing the state root hash, since only the hash of the chained sates from block to block have to be re-computed.
+  * Alos used for receipt hash root
+
+* **Every state change requires state root (hash) re-computation**
+![](imgs/merkle-tree-re-computation.png)
+* When the state 19 is changed to 20, that results in the path including, 21,41, and the state root hash 64 to be re-computed. Only that path is re-computed, not the enterie tree.
+
+* Block Hash Computation
+  * Block hash in Ethereum is computed by first computing the state root hash, transaction root hahs and then receipt root hash, shown at the bottom of the block header.
+  * These roots and all the other items in the header are hash together with the variable nodes to solve the proof of work puzzle.
+  * Block hash serves 2 important purposes
+    * Verification of the integrity of the block and the transactions
+    * Formation of the chain link by embedding the previous block hash in the current block header
+
+![](imgs/block-header-keccak-proof-of-work-puzzle.png)
+
+* If any participant node tampers with the block, it's hash value changes resulting in the mismatch of the hash values and rendering the local chain of the node in an invalid state. 
+  * Any future blocks initiated by the node would be rejected by other miners due to hash mismatch. 
+  * This enforces the immutability of the chain.
+
+
+### Resources: Securing Blockchain
+
+* [Securing the Chain](https://assets.kpmg.com/content/dam/kpmg/xx/pdf/2017/05/securing-the-chain.pdf)
+* [Is It Chain of Headers Rather Than a Chain of Blocks?](https://bitcoin.stackexchange.com/questions/35448/is-it-chain-of-headers-rather-than-a-chain-of-blocks)
+* [Block Headers](https://developer.bitcoin.org/reference/block_chain.html)
+
+### Quiz
+
+* 1 - In Ethereum, the block hash is the has of all the elements in the **BLOCK HEADER**
+* 2 - Merkle tree hash is used for computing **state root, transaction root, receipt root** hash.
+* 3 - Block hash allows for the formation of the chain link by embedding previous block hash in the current block header. True or False?
+  * A: True
+
+* 4 - If a participant node tampers with a block, it results in **hash changing, mismatch of hash values, the local chain of node rendered in an invalid state**
+
+## Week 3 Evaluation: Algorithms & Techniques
+
+### Quiz Resources
+
+* [Bitcoin Wiki](https://en.bitcoin.it/wiki/Block_hashing_algorithm)
+* [Bitcoin Block Hash Calculation](https://cse.buffalo.edu/blockchain/blockhash.html)
+* [Encryption Tool](https://cse.buffalo.edu/blockchain/encryption.html)
+
+* 1 - The transaction Merkle Tree root value in a Bitcoin block is calculated using **hash of transactions**
+
+* 2 - Follow the steps given in the tool at [this link](https://cse.buffalo.edu/blockchain/blockhash.html) to manually calculate the hash of the block #490624. You can obtain the details required in the tool from [this link](https://btc.com/btc/block/490624)
+  * What is the hash of the block #490624? Copy and paste the answer
+    * A: 000000000000000000d4c8b9d5388e42bf084e29546357c63cba8324ed4ec8bf
+
+* 3 - Follow the guidelines in the encryption tool at [this link]() to better understand the concept of Public-Private key encryption and answer the question below.
+  * When encrypting a message with the public key, which key is requried to decrypt the message?
+    * A: Private Key
+
+* 4 - What type of hashing algorithm does Bitcoin blockchain use to determine the hash of a block?
+  * A: SHA-256
+    * Bitcoin uses: SHA256(SHA256(Block_Header))
+
+* 5 - In Ethereum, which algorithm is applied to the private key in order to get a unique public key
+  * A: ECC - Addresses of account are generated using the public key-private key pair. First, a 256-bit random number is generated and designated as a private key, kept secure and locked using a passphrase. Then an ECC algorithm is applied to the private key to get a unique public key.
+
+* 6 - Which of the following methods can be used to obtain the original message from its generated hash message using SHA-256?
+  * A: Original message cannot be retrieved - SHA-256 is one-way hash function, that is a function which is infeasible to invert.
+
+* 7 - In Ethereum, hashing functions are used for which of the following?
+  * A: Generating state hash. Generating account addresses. Generating block header hash.
+    * In Ethereum, hashing functions are used for generating account addresses, digital signatures, transaction hash, state hash, receipt hash, and block header hash.
+
+* 8 - What is the purpose of using a digital signature?
+  * It supports both user authentication and integrity of messages
+    * A valid digital signature gives a recipient reason to belive that the message was created by a known sender (authentication), that the sender cannot deny having sent the message, and that the message was not altered in transit (integrity).
+
+* 9 - Encryption of a message provides **SECURITY**
+
+* 10 - A public key is derived from the **PRIVATE KEY**
