@@ -774,3 +774,189 @@ the sender in this transaction? Provide the answer below in the textbox.
 * 9 - Encryption of a message provides **SECURITY**
 
 * 10 - A public key is derived from the **PRIVATE KEY**
+
+# Module 4 - Decentralized Systems
+
+## Trust Essentials: Decentralized Systems
+
+* Establishing Trust in a Blockchain
+  * Secure chain using protocols
+  * Validate transactions & blocks
+  * Verify availability of resources
+  * Executing & confirming transactions
+
+* Trust Trail
+![](imgs/trust-trail.png)
+
+* Validaition before execution in a Ethereum Trnasaction
+  * Syntax
+  * Tx signature
+  * Time stamp
+  * Nonce
+  * Gas limit
+  * Sender account balance
+  * For Smart Contract execution: Fuel/Gas points & other resources
+  * Tx signatures & Hash
+
+### Resources: Decentralized Systems
+
+* [Blockchain Based Trust & Authentication For Decentralized Sensor Networks](https://arxiv.org/pdf/1706.01730.pdf)
+
+* [How the Blockchain will Radically Transform the Economy](https://www.ted.com/talks/bettina_warburg_how_the_blockchain_will_radically_transform_the_economy)
+
+### Quiz
+
+* 1 - Truste in a decentralized blockchain is about **SECURING THE CHAIN USING SPECIFIC PROTOCOLS, VALIDATING THE TRANSACTIONS AND BLOCKS FOR TAMPER PROOFING, EXECUTING AND CONFIRMING THE TRANSACTIONS**
+
+* 2 - Miners execute the transactions for Ether transfers but are not responsible for the exeuction of smart contracts. True or False?
+  * A: False
+
+
+## Consesus Protocol
+
+* A secure chain is a single main chain with a consistent state
+* Every valid block added to this chain, adds to the trust level of the chain
+
+
+* Proof of Work (PoW)
+  * Consensus protocol used by Bitcoin Blockchain and Ethereum (Ethereum at the time the course was released, now it is Proof of Stake)
+  * The protocol may be the same, the implementations in these two blockchains are different
+  * Many other approaches such as Proof of Stake, Proof of Elapsed Time have been proposed
+
+### Resources: Consensus Protocol
+
+* [A (Short) Guide to Blockchain Consensus Protocols](https://www.coindesk.com/short-guide-blockchain-consensus-protocols/)
+
+* [Review of blockchain consesus mechisnms](https://medium.com/wavesprotocol/review-of-blockchain-consensus-mechanisms-f575afae38f2)
+
+* [Blockchain Expert Explains One Concept in 5 Levels of Difficulty | WIRED](https://www.youtube.com/watch?v=hYip_Vuv8J0)
+
+### Quiz
+
+* 1 - Proof of work is the **Consensus Protocol** used by Bitcoin blockchain and Ethereum Byzantium Metropolis blockchain
+
+* 2 - An approach for consesus protocol that is hotly debated among developers of blockchain is **Proof of Stake**
+
+
+## Robustness
+
+* Robustness is the ability to satisfactorily manage exceptional situations
+* It's all the more important in a decentralized autonomous network such as a blockchain where there are no intermediaries minding the store.
+
+* What if more than one miner solves the consensus puzzle where it close in time to each other? What if more than one transaction references as input the same digital asset?
+  * This situation is called **DOUBLE SPENDING**
+  * Handling such exception satisfactorily is critical for ensuring the security of the blockchain.
+  * With a very low probability, the main chain may split but if it does, the bitcoin protocol has methods to consolidateit to a single chain within a cycle.
+  * Ethereum handles more than one puzzle winner know by allowing Omar or Runner-Up blocks and allocating a small incentive for these Runner-Up blocks.
+    * This incentive model helps in keeping the chains secure.
+![](imgs/chain-split.png)
+
+* Solution for Double Spending
+  * We need a policy and an automatic deterministic way to handle this situation.
+  * A policy for handling transaction and double spending in Bitcoin is to allow the first transaction that reference the digital asset and reject the rest of the transaction that reference the same digital asset.
+  * In Ethereum, a combination of account number and a global nonce is used to address the double spending issue.
+    * Every time a transaction is initiated by an account, a global nonce is included in the transaction.
+    * After that, the nonce is incremented.
+    * Time stamp on the nonce in the transaction should be unique and verified to prevent any double use of digital asset.
+
+
+### Resources
+
+* [How The Blockchain Is Redefining Trust](https://www.wired.com/story/how-the-blockchain-is-redefining-trust/)
+
+### Quiz
+
+* 1 - What happens if more than one miner solves the consensus puzzle very close in time to each other in Ethereum?
+  * Small incentives are given to the runner up blocks and the new block is added to the main chain
+
+* 2 - Double spending is reusing digital assets interntionally or inadvertently. True or False?
+  * True
+
+* 3 - In Ethereum, a combination of account number and global nonce is used to address issues regarding double spending. True or False?
+  * True
+
+## Forks
+
+* Hard Fork and Soft Fork are most common phrases uttered in the context of a blockchain
+  * We hear, at the block 4.7 million, Ethereum did a hard fork
+  * 2018 is a year of hard fork in Ethereum blockchain
+
+* Forks are just normal processes in an evolutionary path of the nascent technology enabling a blockchain.
+  * If robustness and trust is about managing exceptional situations, hard forks and soft forks are indeed at the front and center.
+
+* Soft Fork
+  * Occasionally, a minor process adjustment has to be carried out typically by bootstrapping a new software to the already running processes.
+  * For example: the scrypt concept in Bitcoin was introduced using this method. You can think of this as a software patch or a bug fix to address an issue.
+
+* Hard Fork
+  * Implies a major change int eh protocol.
+  * For example: the recent change from Ethereum Homestead to Metropolis Byzantium version was a planned hard fork and important note after a hard fork the emerging two chains are incompatible.
+
+* **IMPORTANT NOTE**
+  * After a hard fork, the emerging two chains are incompatible. Please be aware of this.
+  * There was an unplanned hard fork in Ethereum protocol. Ethereum Core and Ethereum Classic split, that was enacted to address a critical software issue in a decentralized autonomous organization (DAO) that resulted in a 150 Million dollar heist
+
+
+
+* Ethereum hard fork of October 17, 2017
+  * Ethereum Improvement Proposals (EIP) for this fork
+    * Parallel processsing of transaction
+    * Prrof of Work consensus still stays except that every hundred block, Proof of Stake consensus protocol is applied for evaluating the ledger.
+    * Minor incentive was reduced from 5 ethers to 3 ethers for block creation.
+
+
+* Summarizing, soft fork and hard fork in the blockchain word are like the release of software patches, and new versions of operating system respectively.
+  * Forks are mechanisms that add to the robustness of the blockchain framework.
+  * Well-managed forks help build credibility in the blockchain by providing approaches to manage unexpected faults and planned improvements.
+
+### Resources: Forks
+
+* [Have Blockchain Forks Shwon Hayek to be Right or Wrong?](https://www.trustnodes.com/2017/12/02/blockchain-forks-shown-hayek-right-wrong)
+* [Split on Forks? Blockchain Leaders Learn Tough Lessons from Bitcoin Scaling](https://www.coindesk.com/markets/2017/09/18/split-on-forks-blockchain-leaders-learn-tough-lessons-from-bitcoin-scaling/)
+* [Bitcoin, Blockchain Forks & Lightning](https://www.youtube.com/watch?v=8uF7RVF2osk)
+
+
+### Quiz
+
+* 1 - Bootstrapping the new software to the already running processes is known as **Soft Fork**
+
+* 2 - After a hard fork, the emerging two chains are incompatible. True or False?
+  * True
+
+* 3 - Bitcoin blockchain implemented a soft fork to realize a **P2SH conditional payment script feature**
+
+
+## Week 4 Evaluation: Trust Essentials
+
+* 1 - Which one of the following is correct?
+  * A: Once a consensus is met, a new block is added to the chain
+
+* 2 - True or False? Proof of work is an agreed upon method by which the creation of a new block is achieved in the Bitcoin blockchain.
+  * A: True
+
+* 3 - Trust in **ROBUSTNESS** is the ability to handle natural exceptional situations such as a chain split and double spending.
+
+* 4 - Select the statement with the INCORRECT ending to the sentence "Forks are mechanisms that _____"
+  * Reduce the robustness of the blockchain framework
+
+# Programming Assignment: Getting Started with Blockchain Ethereum
+
+* If working on a machine with 4GB RAM, please refer the pinned post in the discussion forum about hanging VMs first.
+* Macbooks with M1 processors are NOT compatible with the technologies used in this project (virtual machines). Please use a laptop with an Intel x86-64 based processor or another processor that supports "Virtualization." Check https://www.virtualbox.org/ for more information.
+
+* Step 1: Download the Environment Setup v2.pdf and the file Ethereum.ova and follow the directions. (Please make sure that you have a stable internet connection. The typical download time is 1 hour for 2GB file)
+
+  * [Environment Setup v2.pdf](files/Environment-Setup-v2.pdf)
+  * [Ethereum - OVA File](https://d3c33hcgiwev3.cloudfront.net/2vYOIVYkEei6-Q5oMlIdTA_db109ab0562411e893fa877286bab8c4_Ethereum.ova?Expires=1710806400&Signature=I-agmUQpa-WOVudMbFCGpCkySLsPF4tcHoWPPn8yErdge9oq5Vx8OHeU0FV24wxgqguV4ituJlJ48xAyUCRjdt8CwCemCccxCVfEgPQtsgiBY7R0G4x1MbZmyPSyRKaeqNUIjgPcXbO-LZqOutA25c2mLzU-PmKWMI4PjtF1mmA_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A)
+
+* Step 2: Once you have downloaded and set up your environment, go through the course project.
+  * [Blockchain_Basic_Project_July_19_2021.pdf](files/Blockchain_Basic_Project_July_19_2021.pdf)
+
+* Submitting your files:
+  * Addendum: Submitting your files
+  * Some text editors can add metadata like font to the txt file that you submit. One known text editor that does this is TextEditor on Mac. This metadata can create problems with the grading and can cause the grader to be unable to grade properly.
+  * For this reason, we ask you to create the file in Notepad/Atom if creating the document on Windows or on Atom if working on Mac/Linux.
+  * [Trouble Shooting Tips.pdf](files/Trouble-Shooting-Tips.pdf)
+
+# Blockchain Basics: Key Takeaways
+  * [PDF](files/Blockchain-Basic-Key-Takeaways-Page.pdf)
