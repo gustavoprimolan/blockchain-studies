@@ -960,3 +960,7 @@ the sender in this transaction? Provide the answer below in the textbox.
 
 # Blockchain Basics: Key Takeaways
   * [PDF](files/Blockchain-Basic-Key-Takeaways-Page.pdf)
+
+# Hash Generated
+
+* 97c8d39fc70b52208f18fc66bbf58874b
