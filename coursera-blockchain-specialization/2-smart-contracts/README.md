@@ -4,6 +4,8 @@
 
 # Week 1 - Smart Contract Basics: Why Smart Contracts?
 
+## Why Smart Contracts?
+
 * The concept of the smart contract was there well before the advent of the Bitcoin.
 * Computer Scientist Nick Szabo detailed his idea of cryptocurrency Bit gold as a sort of a precursos for Bitcoin.
   * He also outlined the concept of smart contract in his 1996 publication.
@@ -82,3 +84,47 @@
 
 ## Remix IDE and Greeter Demos
 
+* Since a smart contract is deployed in the blockchain, it is an immutable piece of code, and oce deployed, it cannot be changed. 
+* We will have to redeploy the code as a new smart contract, or somehow redirect the calls from a old contract to the new one.
+* Smart contract can sotre variables in it called state variables.
+
+* Contract in the Ethereum blockchain has
+  * pragma directive
+  * name of the contract
+  * data or the state variable that define the state of the contract
+  * collection of function to carry out the intent of a smart contract
+  * identifiers representing these elements are restricted to ASCII character set
+  * Make sure you select meaniingful identifiers and follow camel case convertion in naming them
+
+* [Gretter.sol](smart-contracts-solidity-0.5.9/Greeter.sol)
+
+* Add the above contract in the remix ide, compile it and deploy it, checking its functions and variables in order to interact with it.
+
+## Simple Storage Demo
+
+* [SimpleStorage.sol](smart-contracts-solidity-0.5.9/SimpleStorage.sol)
+
+![](imgs/simple-storage-contract.png)
+
+* About this particular smart contract, imagine a big number that a whole world could share.
+  * A simple de-centralized use case is wolrd population.
+  * Count to something that is distributed all over the planet
+  * This particular smart contract has get, set, increment and decrement as funcitons
+  * You may expand these to more sophisticated operations such as, dig the soil and evaluate the acidity. Identification of an isolated Ebola patient. Work with a remote supply of rare mineral, management of land deeds and any number of decentralized application
+
+
+### Resources: Smart Contract Defined
+
+* [Structure of a Contract](https://docs.soliditylang.org/en/develop/structure-of-a-contract.html)
+* [Camel Case](https://docs.soliditylang.org/en/develop/structure-of-a-contract.html)
+* [Introduction to Smart Contracts](https://docs.soliditylang.org/en/develop/introduction-to-smart-contracts.html)
+
+### Quiz
+
+* 1 - What is a standard notation used for representing identifiers?
+  * Camel Case
+
+* 2 - According to Ethereum Metropolis version, once a smart contract is deployed it is immutable. True or False?
+  * True
+
+## Processing Smart Contracts (Compile Artifacts Demo)
