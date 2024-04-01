@@ -211,3 +211,108 @@
 
 
 ## Week 1 Evaluation: Smart Contract Basics
+
+* What do you need to access a smart contract from an application?
+  * The address and the ABI (Application Binary Interface) of the contract
+
+* What does the basic structure of a cotnract contain?
+  * Pragma directive, Name of the contract, Data and functions
+
+* What are specified in a transaction to invoke an operation on a smart contract?
+  * Function and parameters
+
+
+## Solidity Structure
+
+* Solidity is a high level langaugage for implementating a smart contract
+  * Solidity is a high level language that is a combination of JavaScript, Java, and C++.
+  * It is specially designed to write smart contracts and to target the Ethereum Virtual Machine
+  * The format of a smart contract is like the class definition in the object-oriented programming style
+
+* [Remix](https://remix.ethereum.org/) - WebIDE for Solidity
+  * Supports free runtime test environments
+  * JavaScript VM
+  * Injected Web3 - Like Metamask
+  * Web3 provider
+
+* Smart Contract Structure
+  * 1 - Data or State Variables
+  * 2 - List of Functions:
+    * Constructor - default or user-specified
+    * Fallback function
+    * View
+    * Pure - no state change - It computes under terms of value, example math functions
+    * Public functions -  accessible from outisde - two transactions - state changes recorded on the blockchain
+    * Private function - Accessible only with the current contract
+    * Internal function - Accessible inside the currenct contract and inherited contracts
+    * External functions - can be accessed only from outside the smart contract
+  * 3 - User defined types in struct and enums
+  * 4 - Modifiers
+  * 5 - Events
+
+* Smart Contract can also inherit from other smart contract, as shwon in the following example
+
+```solidity
+contract StandardPolicies { ... }
+
+contract NYPolicies is StandardPolicies {
+  // plus other policies
+}
+```
+
+* Function code:
+  * Contains the local data and statements to process the data and returns the results of the processing
+
+* Function header:
+  * As simples as an anonymous, noname function to a complex function header loaded with a lot of details
+
+```solidity
+// Function is a keyword at the beginning of all functions
+
+//Parametrs are any number of pairs type identifier, example, UInt cout
+
+// returnParameters, return values can be specified as pair type identifier or just type. When type is specified, it has to be explicitly returned using a return statement
+
+// if type and identifier are specified in the return statement, any statechain that happens to the identifier within the function is automatically returned
+
+// Any number of values can be returned, unlike common programming languages that allow only one return value
+// For example: multiple variables, age and gender, can be assigned return values from a function getAge Gender
+//var (age, gender) = getAgeGender();
+
+function nameOfFunction (parameters) visibilityModifier accessModifiers returns (returnParamaters)
+```
+
+### Resources: Solidity Structure
+
+* [What is Solidity? Our Guide to the Language of Ethereum Smart Contracts](https://blockonomi.com/solidity-guide/)
+* [Intro to Solidity 2017 Edition](https://www.youtube.com/watch?v=KkN1O8TChbM)
+* [Ethereum Smart Contracts In Solidity 1 - State, Functions, Modifiers and Events](https://www.youtube.com/watch?v=xWKq86PWG0o)
+
+### Quiz
+
+* What does a simple function definition in Solidity contain?
+  * Function header and code
+
+* Smart Contracts can be inherited from other smart contracts? True or False?
+  * True
+
+## Basic Data Types & Statements (Bidder Data & Functions Demos)
+
+* [BidderData.sol](smart-contracts-solidity-0.5.9/BidderData.sol)
+
+* Gas and crypto fuel that is paid for transaction execution, and an operation step as set by Ethereum Protocol
+
+* 1 Ether = 10<sup>18</sup>
+
+* Price for a Tx = Gas X Gas Price
+
+* Few Solidity Basic Types
+  * uint - unsigned int of 256 bits
+  * int - integer positive and negative value accepted 256 bits
+  * string - string of characters
+  * bool - that supports logic true and false value
+
+* Default modifier is private
+* You have to explicit state the public modifier
+* For every data declared public, accessor or getter function is automatically provided
+* [Bidder.sol](smart-contracts-solidity-0.5.9/Bidder.sol)

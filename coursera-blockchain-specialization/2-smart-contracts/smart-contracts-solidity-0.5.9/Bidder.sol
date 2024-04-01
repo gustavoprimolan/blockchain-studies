@@ -13,7 +13,7 @@ contract Bidder {
     }
     
     function setBidAmount(uint x) public {
-        bidAmount  = x;
+        bidAmount = x;
     }
   
     function determineEligibility() public {
