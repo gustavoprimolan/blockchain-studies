@@ -1268,8 +1268,8 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"eth_getBalance","params":["0x407
 
 ## Understanding The ABI Array
 * [LAB](https://ethereum-blockchain-developer.com/2022-05-erc20-token/02-web3js-abi-array/)
-* [updateUint.js](contracts-section-6/updateUint.js)
-* [MyContract.sol](contracts-section-6/MyContract.sol)
+* [updateUint.js](contracts-section-6/abi-example/updateUint.js)
+* [MyContract.sol](contracts-section-6/abi-example/MyContract.sol)
 
 ### What is the ABI Array?
 * ABI stands for Application Binary Interface
