@@ -265,3 +265,165 @@ MiniMe mini = MiniMe(10, 20, 30);
 
 ## Chapter 5: Time Units
 
+* The level property is pretty self-explanatory. Later on, when we create a battle system, zombies who win more battles will level up over time and get access to more abilities.
+
+* The readyTime property requires a bit more explanation. The goal is to add a "cooldown period", an amount of time a zombie has to wait after feeding or attacking before it's allowed to feed / attack again. Without this, the zombie could attack and multiply 1,000 times per day, which would make the game way too easy.
+
+* In order to keep track of how much time a zombie has to wait until it can attack again, we can use Solidity's time units.
+
+### Time units
+
+* Solidity provides some native units for dealing with time.
+
+* The variable now will return the current unix timestamp of the latest block (the number of seconds that have passed since January 1st 1970). The unix time as I write this is 1515527488.
+
+* Note: Unix time is traditionally stored in a 32-bit number. This will lead to the "Year 2038" problem, when 32-bit unix timestamps will overflow and break a lot of legacy systems. So if we wanted our DApp to keep running 20 years from now, we could use a 64-bit number instead — but our users would have to spend more gas to use our DApp in the meantime. Design decisions!
+
+* Note: Unix time is traditionally stored in a 32-bit number. This will lead to the "Year 2038" problem, when 32-bit unix timestamps will overflow and break a lot of legacy systems. So if we wanted our DApp to keep running 20 years from now, we could use a 64-bit number instead — but our users would have to spend more gas to use our DApp in the meantime. Design decisions!
+
+* Solidity also contains the time units seconds, minutes, hours, days, weeks and years. These will convert to a uint of the number of seconds in that length of time. So 1 minutes is 60, 1 hours is 3600 (60 seconds x 60 minutes), 1 days is 86400 (24 hours x 60 minutes x 60 seconds), etc.
+
+* Here's an example of how these time units can be useful:
+
+```solidity
+uint lastUpdated;
+
+// Set `lastUpdated` to `now`
+function updateTimestamp() public {
+  lastUpdated = now;
+}
+
+// Will return `true` if 5 minutes have passed since `updateTimestamp` was 
+// called, `false` if 5 minutes have not passed
+function fiveMinutesHavePassed() public view returns (bool) {
+  return (now >= (lastUpdated + 5 minutes));
+}
+```
+
+* We can use these time units for our Zombie cooldown feature.
+
+* Let's add a cooldown time to our DApp, and make it so zombies have to wait 1 day after attacking or feeding to attack again.
+
+* Declare a uint called cooldownTime, and set it equal to 1 days. (Forgive the poor grammar — if you set it equal to "1 day", it won't compile!)
+
+* Since we added a level and readyTime to our Zombie struct in the previous chapter, we need to update _createZombie() to use the correct number of arguments when we create a new Zombie struct.
+
+* Update the zombies.push line of code to add 2 more arguments: 1 (for level), and uint32(now + cooldownTime) (for readyTime).
+
+* Note: The uint32(...) is necessary because now returns a uint256 by default. So we need to explicitly convert it to a uint32.
+
+* now + cooldownTime will equal the current unix timestamp (in seconds) plus the number of seconds in 1 day — which will equal the unix timestamp 1 day from now. Later we can compare to see if this zombie's readyTime is greater than now to see if enough time has passed to use the zombie again.
+
+* We'll implement the functionality to limit actions based on readyTime in the next chapter.
+
+## Chapter 6: Zombie Cooldowns
+
+* Now that we have a readyTime property on our Zombie struct, let's jump to zombiefeeding.sol and implement a cooldown timer.
+
+* We're going to modify our feedAndMultiply such that:
+
+* Feeding triggers a zombie's cooldown, and
+
+* Zombies can't feed on kitties until their cooldown period has passed
+
+* This will make it so zombies can't just feed on unlimited kitties and multiply all day. In the future when we add battle functionality, we'll make it so attacking other zombies also relies on the cooldown.
+
+* First, we're going to define some helper functions that let us set and check a zombie's readyTime.
+
+
+### Passing structs as arguments
+* You can pass a storage pointer to a struct as an argument to a private or internal function. This is useful, for example, for passing around our Zombie structs between functions.
+
+* The syntax looks like this:
+```solidity
+function _doStuff(Zombie storage _zombie) internal {
+  // do stuff with _zombie
+}
+```
+
+* This way we can pass a reference to our zombie into a function instead of passing in a zombie ID and looking it up.
+
+
+## Chapter 7: Public Functions & Security
+
+* Now let's modify feedAndMultiply to take our cooldown timer into account.
+
+* Looking back at this function, you can see we made it public in the previous lesson. An important security practice is to examine all your public and external functions, and try to think of ways users might abuse them. Remember — unless these functions have a modifier like onlyOwner, any user can call them and pass them any data they want to.
+
+* Re-examining this particular function, the user could call the function directly and pass in any _targetDna or _species they want to. This doesn't seem very game-like — we want them to follow our rules!
+
+* On closer inspection, this function only needs to be called by feedOnKitty(), so the easiest way to prevent these exploits is to make it internal.
+
+## Put it to the test
+* Currently feedAndMultiply is a public function. Let's make it internal so that the contract is more secure. We don't want users to be able to call this function with any DNA they want.
+
+* Let's make feedAndMultiply take our cooldownTime into account. First, after we look up myZombie, let's add a require statement that checks _isReady() and passes myZombie to it. This way the user can only execute this function if a zombie's cooldown time is over.
+
+* At the end of the function let's call _triggerCooldown(myZombie) so that feeding triggers the zombie's cooldown time.
+
+## Chapter 8: More on Function Modifiers
+
+### Function modifiers with arguments
+
+* Previously we looked at the simple example of onlyOwner. But function modifiers can also take arguments. For example:
+
+```solidity
+// A mapping to store a user's age:
+mapping (uint => uint) public age;
+
+// Modifier that requires this user to be older than a certain age:
+modifier olderThan(uint _age, uint _userId) {
+  require(age[_userId] >= _age);
+  _;
+}
+
+// Must be older than 16 to drive a car (in the US, at least).
+// We can call the `olderThan` modifier with arguments like so:
+function driveCar(uint _userId) public olderThan(16, _userId) {
+  // Some function logic
+}
+```
+
+* You can see here that the olderThan modifier takes arguments just like a function does. And that the driveCar function passes its arguments to the modifier.
+
+* Let's try making our own modifier that uses the zombie level property to restrict access to special abilities.
+
+## Chapter 9: Zombie Modifiers
+
+* Now let's use our aboveLevel modifier to create some functions.
+
+* Our game will have some incentives for people to level up their zombies:
+  * For zombies level 2 and higher, users will be able to change their name.
+  * For zombies level 20 and higher, users will be able to give them custom DNA.
+
+* We'll implement these functions below. Here's the example code from the previous lesson for reference:
+
+### Put it to the test
+
+* Create a function called changeName. It will take 2 arguments: _zombieId (a uint), and _newName (a string with the data location set to calldata ), and make it external. It should have the aboveLevel modifier, and should pass in 2 for the _level parameter. (Don't forget to also pass the _zombieId).
+
+* Note: calldata is somehow similar to memory, but it's only available to external functions.
+
+* In this function, first we need to verify that msg.sender is equal to zombieToOwner[_zombieId]. Use a require statement.
+
+* Then the function should set zombies[_zombieId].name equal to _newName.
+
+* Create another function named changeDna below changeName. Its definition and contents will be almost identical to changeName, except its second argument will be _newDna (a uint), and it should pass in 20 for the _level parameter on aboveLevel. And of course, it should set the zombie's dna to _newDna instead of setting the zombie's name.
+
+```solidity
+
+  // Start here
+  function changeName(uint _zombieId, string calldata _newName) external aboveLevel(2, _zombieId){
+    require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].name = _newName;
+  }
+
+  function changeDna(uint _zombieId, uint _newDna) external aboveLevel(20, _zombieId) {
+    require(msg.sender == zombieToOwner[_zombieId]);
+    zombies[_zombieId].dna = _newDna;
+  }
+
+```
+
+## Chapter 10: Saving Gas With 'View' Functions
+
